@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-07-22
+
+### Added
+- 🧪 "Kiểm tra giới hạn công cụ trước khi build" — bước xác minh khả năng thật của MCP/plugin Figma đang dùng (Paint/Text Style thật, alpha/opacity, xoá component property, xoá layer con mặc định, ẩn phần tử trong Auto Layout) trước khi build hàng loạt component. Báo giới hạn cho user ngay từ đầu, không đợi đến báo cáo cuối.
+- 📏 "Layout Token (Content Width)" — chốt 1 con số content-width chuẩn cho khu vực nội dung (form/card) áp dụng thống nhất cho mọi component liên quan, tránh lệch mép giữa input/button/alert khi ráp chung màn hình.
+- ✅ Bước "test property ngay sau khi build" trong Build Component Mode: tạo instance test, toggle từng property (boolean/variant/instance-swap) ngay sau khi build xong 1 component, không dồn lại test ở cuối.
+- ✅ 2 mục mới trong Quality Checklist (Component): đã test toggle property trên instance thật chưa, các component chung khu vực có cùng content width không.
+- 💭 Tách "nội dung tự bịa" ra khỏi mục "Giả định" chung — đánh dấu riêng, nổi bật hơn để dễ bắt và sửa ngay.
+- ❓ Thêm mục "Giới hạn công cụ phát sinh trong lúc build" vào "Cần xác nhận".
+
+### Context
+Rút ra từ 1 phiên build thật (component library + rebuild 9 màn hình "Quên mật khẩu" trên Figma qua MCP bridge) — phát hiện nhiều bug chỉ lộ ra sau khi user review bằng mắt (Error text không wrap, ẩn icon làm cả instance render trắng, input box lệch 20px so với button do padding ẩn). Các mục thêm ở bản này nhằm bắt các lớp lỗi đó sớm hơn, ở giai đoạn build thay vì giai đoạn review.
+
+---
+
 ## [1.0.0] - 2026-07-22
 
 ### Added

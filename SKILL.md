@@ -141,8 +141,9 @@ Liệt kê tất cả screen/state cần thiết:
 4. Xác định variants (sizes, states, themes...)
 5. Xác định responsive behavior
 6. Xây dựng Auto Layout
-7. Tạo playground để kiểm tra
-8. Document cách sử dụng
+7. Tạo 1 instance test và **toggle lần lượt từng property** (boolean, variant, instance-swap) để xác minh không vỡ layout/render — làm NGAY sau khi build xong component này, không dồn lại test cuối cùng sau khi đã build hết cả bộ component
+8. Tạo playground tổng hợp để kiểm tra toàn bộ variant cùng lúc
+9. Document cách sử dụng
 
 **Checklist**:
 - Component không bị vỡ khi text dài/ngắn
@@ -150,6 +151,7 @@ Liệt kê tất cả screen/state cần thiết:
 - Hỗ trợ disabled, loading, error states
 - Accessible (contrast, focus state)
 - Có tooltip/label nếu cần
+- Đã test bằng cách toggle từng property trên 1 instance thật (không chỉ nhìn ảnh export ở giá trị mặc định)
 
 ---
 
@@ -205,6 +207,11 @@ Liệt kê tất cả screen/state cần thiết:
 ---
 
 ## Quy Tắc Design System
+
+### Layout Token (Content Width) — chốt TRƯỚC khi build component đầu tiên
+Chốt 1 con số "content width" chuẩn cho khu vực nội dung (form, card...) và áp dụng thống nhất cho MỌI component sẽ nằm trong khu vực đó (input, button, alert, banner...). Không để mỗi component tự chọn cách đo riêng (component A fixed-width, component B dùng FILL, component C lại có padding ẩn khác) — đây là nguyên nhân phổ biến gây lệch mép (input hẹp hơn button, alert lệch so với input...) khi ráp chung vào 1 màn hình.
+
+Khi dùng Auto Layout với 1 số component FILL và số khác FIXED trong cùng hàng ngang, phải trừ đúng padding của container cha trước khi gán số fixed cho component kia — nếu không sẽ tràn lệch mà không có cảnh báo nào từ tool.
 
 ### Color Token
 Sử dụng **semantic token**, không chỉ tên vật lý:
@@ -308,6 +315,8 @@ Sử dụng spacing scale nhất quán: 4, 8, 12, 16, 20, 24, 32, 40, 48
 - ✓ Properties đầy đủ?
 - ✓ Component vẫn OK khi content dài?
 - ✓ Không bị detach?
+- ✓ Đã test bằng cách toggle từng property trên 1 instance thật chưa (không chỉ nhìn ảnh export mặc định)?
+- ✓ Các component dùng chung 1 khu vực (form/card) có cùng content width, không lệch mép?
 
 ### Responsive & Accessibility
 - ✓ Desktop, Tablet, Mobile hoạt động?
@@ -343,10 +352,12 @@ Cung cấp bản tóm tắt với các phần:
 
 ### 💭 Giả định
 - Các giả định do PRD chưa đầy đủ
+- **Nội dung tự bịa (không lấy từ nguồn thật)**: liệt kê RIÊNG, tách bạch khỏi giả định thông thường — vd copy/message cho state không có trong nguồn gốc. Đánh dấu nổi bật để user dễ bắt và sửa ngay, không gộp chìm vào "Cần xác nhận" cuối bài.
 
 ### ❓ Cần xác nhận
 - Vấn đề nghiệp vụ còn chưa rõ
 - Quyết định có thể ảnh hưởng đến sản phẩm
+- Giới hạn công cụ phát sinh trong lúc build (nếu có) — nêu rõ workaround đã áp dụng
 
 ### ✅ Kiểm tra
 - Responsive
@@ -359,9 +370,10 @@ Cung cấp bản tóm tắt với các phần:
 ## Figma Integration (Nếu có Figma MCP)
 
 Khi có Figma file:
+0. **Kiểm tra giới hạn công cụ**: trước khi build hàng loạt component, xác minh khả năng thật của MCP/plugin đang dùng — có tạo được Paint/Text Style thật không (hay chỉ set màu literal lên từng node), có set được alpha/opacity trong suốt không (hay luôn bị ép opaque), có xoá được component property đã tạo không, có xoá được layer con mặc định của 1 instance không, ẩn 1 phần tử (visible=false) trong Auto Layout có gây lỗi render cả instance không. Nếu công cụ thiếu khả năng nào, báo cho user **ngay từ đầu** (trước khi build hàng loạt), không đợi đến báo cáo cuối cùng — kèm cách sẽ workaround (vd: không tạo Style thật → dùng màu literal nhất quán; không set alpha → camouflage màu nền theo từng biến thể).
 1. **Audit**: Đọc file trước, kiểm tra Design System
 2. **Design**: Tạo/chỉnh sửa trực tiếp trong Figma
-3. **Verify**: Kiểm tra quality sau khi hoàn thành
+3. **Verify**: Kiểm tra quality sau khi hoàn thành — test bằng cách toggle từng component property trên 1 instance thật, không chỉ nhìn ảnh export ở giá trị mặc định
 
 ---
 
