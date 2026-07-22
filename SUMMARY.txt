@@ -1,0 +1,152 @@
+═══════════════════════════════════════════════════════════════════════════
+                     UX/UI DESIGN SKILL - BUILD SUMMARY
+═══════════════════════════════════════════════════════════════════════════
+
+✅ SKILL CREATED SUCCESSFULLY
+
+📂 Cấu trúc Skill:
+├── SKILL.md (490 lines)
+│   ├── Metadata: name, description (pushy + trigger-friendly)
+│   ├── Quy trình cơ bản (Capture Intent → Interview → Design → Quality Check)
+│   ├── 5 Modes chi tiết:
+│   │   1. Design Screen Mode (ưu tiên cao)
+│   │   2. Build Component Mode (ưu tiên cao)
+│   │   3. Audit Mode (ưu tiên trung)
+│   │   4. Edit Mode (ưu tiên trung)
+│   │   5. PRD to UI Mode (full process)
+│   ├── Design System Rules (Color, Typography, Spacing, etc.)
+│   ├── UX Principles + Quality Checklist
+│   ├── Figma Integration
+│   └── Strict Forbidden Behaviors
+
+├── README.md
+│   ├── Skill overview
+│   ├── 5 modes giải thích ngắn gọn
+│   ├── Reference files guide
+│   ├── Figma integration workflows
+│   ├── Example workflow
+│   └── Pro tips
+
+├── references/
+│   ├── design-system-foundation.md (300+ lines)
+│   │   ├── Color tokens template (semantic)
+│   │   ├── Typography scale
+│   │   ├── Spacing, radius, shadow
+│   │   ├── Grid system
+│   │   ├── Core components minimal set
+│   │   ├── A11y baseline
+│   │   └── Checklist: membuat DS baru
+│   │
+│   └── prd-reading-checklist.md (350+ lines)
+│       ├── 7 steps phân tích PRD
+│       ├── Requirements extraction template
+│       ├── User flow building
+│       ├── Screen identification
+│       ├── Component inventory
+│       ├── Clarifying questions
+│       └── PRD summary document template
+
+└── TEST_PROMPTS.md
+    ├── 7 test cases cho 5 modes
+    ├── Mixed requests
+    ├── Cách kiểm tra
+    └── Success criteria
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎯 KEY FEATURES:
+
+1. ✅ Interview-driven (hỏi kỹ trước thiết kế)
+2. ✅ 5 modes hoạt động riêng biệt
+3. ✅ Design System first (tái dùng > tạo mới)
+4. ✅ Quality checklist built-in
+5. ✅ Responsive + Accessibility focus
+6. ✅ Figma integration ready
+7. ✅ Developer handoff friendly
+8. ✅ Tiếng Việt
+
+═══════════════════════════════════════════════════════════════════════════
+
+📋 TRIGGER KEYWORDS:
+
+Skill trigger khi mention:
+• design, UX, UI, Figma
+• screen, wireframe, prototype
+• component, design system
+• layout, responsive, accessibility
+• interaction, animate, state
+• Bất kỳ yêu cầu thiết kế sản phẩm nào
+
+═══════════════════════════════════════════════════════════════════════════
+
+🔧 USAGE:
+
+1. Enable skill trong Claude profile
+2. Mention design-related request
+3. Skill trigger automatically
+4. Chọn appropriate mode (auto-detected)
+5. Follow interview → design → quality check
+
+═══════════════════════════════════════════════════════════════════════════
+
+✨ HIGHLIGHTS:
+
+✓ Senior Product Designer mindset
+✓ Systematic approach (không vội vàng)
+✓ Best practices (UX principles, WCAG accessibility)
+✓ Comprehensive checklist
+✓ Production-ready output
+✓ Developer-friendly handoff
+✓ Clear assumptions + clarifications
+
+═══════════════════════════════════════════════════════════════════════════
+
+📚 REFERENCE FILES:
+
+design-system-foundation.md:
+→ Dùng khi xây dựng design system từ đầu
+→ Color, typography, spacing, grid, component templates
+→ Customizable baselines
+
+prd-reading-checklist.md:
+→ Dùng khi nhận PRD
+→ 7 steps phân tích chi tiết
+→ Giúp capture requirement hoàn chỉnh
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎓 WORKFLOW EXAMPLES:
+
+Mode 1 (Design Screen):
+  PRD → Interview → Flow → Screens → Components → Figma → QA ✓
+
+Mode 2 (Build Component):
+  Brief → Anatomy → Properties → Variants → Auto Layout → Playground ✓
+
+Mode 3 (Audit):
+  Figma file → Analysis → Issues → Recommendations ✓
+
+Mode 4 (Edit):
+  Request → Identify → Edit → Verify impact ✓
+
+Mode 5 (PRD to UI):
+  PRD → Full process → High-fidelity UI → Prototype ✓
+
+═══════════════════════════════════════════════════════════════════════════
+
+🚀 NEXT STEPS:
+
+1. Review SKILL.md để hiểu chi tiết
+2. Try TEST_PROMPTS.md để test skill
+3. Adjust per your needs (customize colors, patterns)
+4. Enable Figma MCP untuk full integration
+5. Start using! 🎨
+
+═══════════════════════════════════════════════════════════════════════════
+
+Version: 1.0
+Created: 2026-07-22
+Language: Tiếng Việt (Vietnamese)
+Status: Ready to use ✅
+
+═══════════════════════════════════════════════════════════════════════════
