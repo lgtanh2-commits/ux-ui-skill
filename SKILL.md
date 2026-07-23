@@ -135,6 +135,7 @@ Liệt kê tất cả screen/state cần thiết:
 ### Mode 2: Build Component Mode (Ưu tiên #2)
 **Khi**: Cần tạo component mới hoặc cải tiến component có sẵn
 **Quy trình**:
+0. Nếu sẽ tái sử dụng/nest 1 component có sẵn (vd icon set) làm phần tử con — kiểm tra nhanh "sức khỏe" của nó trước (xem mục "Kiểm tra giới hạn công cụ" bên dưới): set thử 1 property trên 1 instance bất kỳ của nó. Component có sẵn bị lỗi cấu trúc từ trước có thể chặn property của CHÍNH component mới đang build.
 1. Kiểm tra component tương tự đã có
 2. Xác định anatomy (cấu trúc)
 3. Xác định properties (boolean, text, color, size...)
@@ -240,6 +241,8 @@ Sử dụng spacing scale nhất quán: 4, 8, 12, 16, 20, 24, 32, 40, 48
   - Số lượng item thay đổi
   - Kích thước container thay đổi
   - Chuyển responsive breakpoint
+- **FILL chỉ có ý nghĩa khi parent đang FIXED width** (hoặc được ép FIXED/FILL bởi tầng cha xa hơn). Đặt `layoutSizingHorizontal=FILL` cho 1 phần tử bên trong parent đang **HUG** sẽ cho kích thước không xác định/sai (đã gặp: Toast root để HUG, đặt Message wrapper FILL bên trong → root co sai kích thước). Muốn "phần tử lấp khoảng trống còn lại nhưng tổng thể vẫn hug theo nội dung" → chỉ giữ HUG ở root, phần tử bên trong dùng width cố định hợp lý (không FILL); chỉ dùng FILL cho phần tử con khi root đã là FIXED width.
+- **Text node có thể không set được `layoutSizingHorizontal/Vertical` trực tiếp** qua một số MCP tool (dù Figma Plugin API gốc hỗ trợ) — nếu gặp lỗi dạng "Node type TEXT does not support layout sizing", workaround: bọc text trong 1 frame auto-layout rồi set FILL cho frame đó (chỉ áp dụng khi root là FIXED, xem mục trên); nếu root là HUG thì đơn giản là resize text về 1 width cố định hợp lý (auto-height để wrap).
 
 ---
 
@@ -370,10 +373,24 @@ Cung cấp bản tóm tắt với các phần:
 ## Figma Integration (Nếu có Figma MCP)
 
 Khi có Figma file:
-0. **Kiểm tra giới hạn công cụ**: trước khi build hàng loạt component, xác minh khả năng thật của MCP/plugin đang dùng — có tạo được Paint/Text Style thật không (hay chỉ set màu literal lên từng node), có set được alpha/opacity trong suốt không (hay luôn bị ép opaque), có xoá được component property đã tạo không, có xoá được layer con mặc định của 1 instance không, ẩn 1 phần tử (visible=false) trong Auto Layout có gây lỗi render cả instance không. Nếu công cụ thiếu khả năng nào, báo cho user **ngay từ đầu** (trước khi build hàng loạt), không đợi đến báo cáo cuối cùng — kèm cách sẽ workaround (vd: không tạo Style thật → dùng màu literal nhất quán; không set alpha → camouflage màu nền theo từng biến thể).
+0. **Kiểm tra giới hạn công cụ**: trước khi build hàng loạt component, xác minh khả năng thật của MCP/plugin đang dùng — thử trên 1 node/property nháp, KHÔNG giả định môi trường lý tưởng:
+   - Có tạo được Paint/Text Style thật không (hay chỉ set màu literal lên từng node)?
+   - Có set được alpha/opacity trong suốt không (hay luôn bị ép opaque)?
+   - Có xoá được component property đã tạo không? (tool có thể được khai báo trong MCP schema nhưng plugin đang chạy chưa hỗ trợ → lỗi "Unknown command" do version lệch giữa MCP server và bản plugin trong Figma — luôn thử trước khi lệ thuộc vào nó giữa chừng build)
+   - Có xoá được layer con mặc định của 1 instance không?
+   - Ẩn 1 phần tử (`visible=false`) trong Auto Layout có gây lỗi render cả instance không?
+   - **Component/instance CÓ SẴN trong file (không phải do mình tạo) có đang bị lỗi cấu trúc từ trước không** (vd 1 variant con đặt tên sai định dạng `Prop=Value`)? Lỗi này có thể khiến MỌI thao tác set property trên MỌI instance của component đó bị chặn **toàn file** (kể cả instance không liên quan gì đến việc đang build) — test bằng cách set thử 1 property trên 1 instance bất kỳ của component có sẵn đó TRƯỚC khi xây thứ gì phụ thuộc vào nó.
+   - Node mới tạo/di chuyển (`create_component_instance`, `move_node`...) có thực sự nằm đúng x/y truyền vào không? Nếu parent đang Auto Layout, x/y thường bị bỏ qua — node mới luôn bị đẩy về **cuối** danh sách con theo layout flow, bất kể toạ độ truyền vào. Xác minh bằng `get_node_info` ngay sau khi tạo; nếu cần chèn đúng vị trí giữa 2 sibling, reparent lại 1 sibling liền kề vào chính parent của nó để đẩy thứ tự (không có API "insert at index" riêng).
+   - Tool trả về message "thành công" **không đồng nghĩa** giá trị thực tế đúng — vd INSTANCE_SWAP defaultValue nhận vào không lỗi lúc tạo nhưng khiến property sai lệch sau 1 thao tác khác (reparent...); reparent 1 instance có property đang bind cũng có thể âm thầm đổi giá trị hiển thị. **Luôn `get_node_info` lại để xác minh** sau các thao tác mutate quan trọng, đặc biệt sau reparent/instance-swap, đừng chỉ tin message trả về.
+
+   Nếu công cụ thiếu khả năng nào, báo cho user **ngay từ đầu** (trước khi build hàng loạt), không đợi đến báo cáo cuối cùng — kèm cách sẽ workaround (vd: không tạo Style thật → dùng màu literal nhất quán; không set alpha → camouflage màu nền theo từng biến thể; INSTANCE_SWAP không ổn định → để icon là instance thường, vẫn swap tay được qua UI Figma).
 1. **Audit**: Đọc file trước, kiểm tra Design System
 2. **Design**: Tạo/chỉnh sửa trực tiếp trong Figma
 3. **Verify**: Kiểm tra quality sau khi hoàn thành — test bằng cách toggle từng component property trên 1 instance thật, không chỉ nhìn ảnh export ở giá trị mặc định
+
+### Thao tác Figma MCP — lưu ý vận hành
+- **Giới hạn batch tool-call**: gọi quá nhiều lệnh song song (vd ~20+ lệnh trong 1 batch) dễ gây timeout hoặc thất bại âm thầm từng phần. Chia nhỏ theo từng nhóm hợp lý (vd theo từng state/variant, 3-8 lệnh/nhóm) và verify lại bằng `get_node_info` sau mỗi nhóm thay vì tin tất cả kết quả "success" trong 1 batch lớn.
+- **File nhiều page**: `get_document_info`/`get_selection` thường chỉ phản ánh page đang **mở** trên UI Figma của user tại thời điểm gọi, không liệt kê được toàn bộ page trong file. Muốn thao tác trên page khác, nhờ user tự chuyển tab trong Figma; xác nhận đã chuyển đúng bằng cách nhờ user **click chọn 1 layer cụ thể** rồi đọc `get_selection` (đáng tin hơn `get_document_info`, vốn có thể chưa refresh theo tab mới).
 
 ---
 

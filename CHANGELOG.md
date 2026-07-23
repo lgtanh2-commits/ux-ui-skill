@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2026-07-24
+
+### Added
+- 🧩 "Kiểm tra sức khỏe component có sẵn" — khi tái sử dụng/nest 1 component có sẵn (vd icon set) làm phần tử con của component mới, set thử 1 property trên 1 instance bất kỳ của nó TRƯỚC. Component có sẵn lỗi cấu trúc từ trước (vd variant đặt tên sai định dạng) có thể chặn property của toàn bộ instance dùng nó trong FILE, kể cả component mới hoàn toàn không liên quan.
+- 📐 "FILL chỉ có ý nghĩa khi parent đang FIXED width" — dùng FILL bên trong 1 parent đang HUG cho kích thước không xác định/sai. Ghi rõ cách chọn HUG-root/FIXED-inner hay ngược lại tuỳ nhu cầu co giãn.
+- 📝 Ghi chú giới hạn: text node có thể không set được layoutSizingHorizontal/Vertical trực tiếp qua 1 số MCP tool — workaround bọc frame hoặc dùng width cố định.
+- ⚠️ "Tool trả 'thành công' không đồng nghĩa giá trị đúng" — luôn get_node_info lại để xác minh sau các thao tác mutate quan trọng (đặc biệt sau reparent, instance-swap).
+- 🧭 "Auto Layout bỏ qua x/y khi tạo/move node mới" — node luôn bị đẩy về cuối danh sách con theo layout flow; cách chèn đúng vị trí bằng reparent lại sibling liền kề.
+- ⏱️ "Giới hạn batch tool-call" — chia nhỏ theo nhóm (3-8 lệnh), verify lại sau mỗi nhóm thay vì tin 1 batch lớn (~20+ lệnh) dễ timeout/thất bại âm thầm từng phần.
+- 📄 "File nhiều page" — get_document_info/get_selection chỉ phản ánh page đang mở trên UI của user; xác nhận chuyển tab bằng cách nhờ user click chọn 1 layer rồi đọc get_selection.
+
+### Context
+Rút ra từ phiên build component library (Input Field 7-state + Toast 3-state) qua Figma MCP bridge — gặp: component "Field Icon" có sẵn trong file bị lỗi cấu trúc từ trước khiến toàn bộ property của mọi instance dùng nó (kể cả component mới không liên quan) bị chặn; Toast co sai kích thước do FILL trong parent HUG; icon-swap phải bỏ property INSTANCE_SWAP giữa chừng do không ổn định; batch 26 lệnh song song timeout hàng loạt.
+
+---
+
 ## [1.1.0] - 2026-07-22
 
 ### Added
