@@ -11,12 +11,14 @@ Một skill toàn diện để Claude hoạt động như **Senior Product Desig
 
 ```
 ux-ui-design-skill/
-├── SKILL.md                           # Main skill instructions (tất cả modes)
-├── README.md                          # File này
+├── SKILL.md                               # Main skill instructions (tất cả modes)
+├── README.md                              # File này
 └── references/
-    ├── screen-size-layout-requirements.md    # Platform, breakpoint, layout structure ⭐ NEW
-    ├── design-system-foundation.md          # Template xây dựng Design System từ đầu
-    └── prd-reading-checklist.md             # Checklist đọc & phân tích PRD
+    ├── screen-size-layout-requirements.md      # Platform, breakpoint, layout ⭐
+    ├── token-creation-management.md            # Tạo & quản lý tokens ⭐
+    ├── token-application-guide.md              # Dùng tokens khi design ⭐
+    ├── design-system-foundation.md             # Template Design System
+    └── prd-reading-checklist.md                # Checklist đọc & phân tích PRD
 ```
 
 ## 🎯 Khi Nào Dùng Skill Này
@@ -103,6 +105,36 @@ Xử lý toàn bộ từ PRD đến design hoàn chỉnh:
 - Checklist & common mistakes
 
 **Dùng khi**: Bắt đầu design, cần xác định platform & layout trước tiên — **LUÔN hỏi platform trước khi thiết kế!**
+
+---
+
+### `token-creation-management.md` ⭐ NEW
+Hướng dẫn chi tiết tạo & quản lý design tokens:
+- Token creation workflow (Define → Create → Verify)
+- Token naming strategy (semantic naming, conventions)
+- Token organization structure trong Figma
+- Color Styles, Typography Styles, Spacing Variables, Shadow Styles
+- Library setup & team sharing
+- Token management & versioning
+- Token export cho developers (CSS, JSON, Tailwind)
+- Checklist & common mistakes
+
+**Dùng khi**: Xây dựng design system, tạo token từ đầu, quản lý token team
+
+---
+
+### `token-application-guide.md` ⭐ NEW
+Hướng dẫn áp dụng tokens khi thiết kế screens:
+- Token application workflow
+- Color token application (Background, Text, Border, Action, Status)
+- Typography token application (Display, Heading, Body, Label, Caption)
+- Spacing token application (padding, gap, layout)
+- Shadow/Effect token application
+- Token override guide (khi nào override, cách làm an toàn)
+- Token application checklist
+- Common mistakes & quick reference
+
+**Dùng khi**: Thiết kế screens, components — **LUÔN dùng tokens, KHÔNG bao giờ literal colors/fonts/spacing!**
 
 ---
 

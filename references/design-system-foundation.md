@@ -132,6 +132,234 @@ Size/Navigation/Item = 44px (height, mobile)
 Size/Navigation/ItemDesktop = 48px (height, desktop)
 ```
 
+---
+
+## 🎨 How to Create Tokens in Figma
+
+### Step 1: Color Tokens (Color Styles)
+
+#### Workflow:
+1. **Tạo Color Style cho Semantic Colors**
+   - Assets panel → Colors tab → `+` (Create new color style)
+   - Chọn mã màu
+   - Đặt tên theo semantic naming: `Background/Primary`, `Text/Primary`, `Action/Primary`
+   - Figma tự tạo folder dựa trên `/` trong tên
+
+2. **Naming Structure**
+   ```
+   Background/Primary      ← Figma tạo folder "Background", style "Primary"
+   Background/Secondary
+   Text/Primary
+   Text/Secondary
+   Border/Default
+   Action/Primary
+   Status/Success
+   ```
+
+3. **Apply Color Style trong Component**
+   - Select element (shape, text, stroke)
+   - Design panel → Fill → Click fill color → Select "Color style"
+   - Lựa chọn từ danh sách (grouped by folder)
+   - Nếu update color style → mọi instance tự động update
+
+#### Best Practice:
+- ✅ **Use Color Styles** cho tất cả semantic colors (không set màu literal)
+- ✅ **Naming**: Semantic tên (không dùng "Blue1", "Red2")
+- ❌ **Avoid**: Set màu trực tiếp trên element (nếu cần thay đổi sau sẽ lâu)
+
+---
+
+### Step 2: Typography Tokens (Text Styles)
+
+#### Workflow:
+1. **Tạo Typography Style**
+   - Create text element
+   - Set font family, size, weight, line height, letter spacing
+   - Assets panel → Typography tab → `+` (Create new text style)
+   - Đặt tên: `Display`, `Heading 1`, `Body`, `Label`, etc.
+
+2. **Example Setup**
+   ```
+   Display
+   ├─ Font: Inter
+   ├─ Size: 48px
+   ├─ Weight: 700 (Bold)
+   ├─ Line Height: 1.2 (57.6px)
+   └─ Letter Spacing: -0.5px
+   ```
+
+3. **Apply Typography Style**
+   - Select text element
+   - Design panel → Typography section → Click style name → Select from list
+   - Update text properties → auto-apply to all instances
+
+#### Best Practice:
+- ✅ **Use Text Styles** cho tất cả typography tokens
+- ✅ **Separate font size từ color** (typography chỉ style text properties, color dùng Color Style)
+- ✅ **Naming**: Functional tên (`Body`, `Heading 1`, `Label`) không size-based
+- ❌ **Avoid**: Set font/size trực tiếp, use override ở instance
+
+---
+
+### Step 3: Spacing Tokens (Variables hoặc Auto Layout)
+
+#### Option A: Figma Variables (Figma 2024+)
+1. **Create Spacing Variables**
+   - Prototypes panel → Variables tab → `+` (Create new variable)
+   - Type: Number, Resolution: Absolute
+   - Naming: `spacing/8`, `spacing/16`, `spacing/24`, etc.
+   - Value: 8, 16, 24, 32, 40, 48...
+
+2. **Apply to Component**
+   - Auto Layout: Gap = select variable
+   - Padding: select variable
+   - Mọi component use variable auto-update khi variable change
+
+#### Option B: Documentation (nếu project chưa dùng Variables)
+- Lập danh sách spacing scale trong file
+- Khi design: manually set padding/gap theo scale (8, 16, 24, 32...)
+- Later: migrate sang Variables
+
+---
+
+### Step 4: Border Radius Tokens
+
+**Best Practice in Figma**:
+- Set radius trực tiếp trên component (không có "Radius Style" official)
+- Maintain consistency bằng documentation
+- Convention:
+  ```
+  Small corner: 4px   (Input, small button)
+  Medium corner: 8px  (Card, standard button)
+  Large corner: 12px  (Modal, large card)
+  Full circle: 9999px (Avatar, pill button)
+  ```
+
+**Workaround**: Tạo component dengan radius mặc định, dùng property `cornerRadius` nếu cần variant
+
+---
+
+### Step 5: Shadow Tokens
+
+**Best Practice**:
+- Tạo **Effect Styles** cho shadows (nếu Figma hỗ trợ)
+- Design panel → Effects (shadow icon) → `+` (Create effect style)
+- Naming: `Shadow/Small`, `Shadow/Medium`, `Shadow/Large`, `Shadow/Elevated`
+
+**Setup Example**:
+```
+Shadow/Small
+├─ X: 0
+├─ Y: 1px
+├─ Blur: 2px
+├─ Spread: 0
+└─ Color: rgba(0,0,0,0.05)
+```
+
+**Apply**:
+- Select element → Design panel → Effects → Add effect style
+- Select từ list → auto-apply
+
+---
+
+### Step 6: Size Tokens (Naming Convention)
+
+Figma không có "Size Style" chính thức, nhưng maintain consistency bằng:
+
+1. **Component Properties**
+   ```
+   Button size property:
+   ├─ Small (height: 32px)
+   ├─ Medium (height: 40px)
+   └─ Large (height: 48px)
+   ```
+
+2. **Documentation in Figma**
+   - Create "Tokens" page trong file
+   - List tất cả size values
+   - Designer reference khi thiết kế
+
+3. **Naming Convention**
+   ```
+   Component properties dùng:
+   Size: Small | Medium | Large
+   
+   Input heights:
+   Size/Input/Small = 32px
+   Size/Input/Standard = 40px
+   ```
+
+---
+
+### Organization Structure in Figma
+
+**Recommended Folder Organization**:
+```
+Figma Assets Panel:
+├─ Colors (Color Styles)
+│  ├─ Background/Primary
+│  ├─ Background/Secondary
+│  ├─ Text/Primary
+│  ├─ Action/Primary
+│  └─ Status/Success
+│
+├─ Typography (Text Styles)
+│  ├─ Display
+│  ├─ Heading 1
+│  ├─ Body
+│  └─ Label
+│
+├─ Effects (Effect Styles) - nếu dùng shadows
+│  ├─ Shadow/Small
+│  ├─ Shadow/Medium
+│  └─ Shadow/Large
+│
+└─ Variables (nếu Figma 2024+)
+   ├─ spacing/8
+   ├─ spacing/16
+   └─ spacing/24
+```
+
+**Key Points**:
+- Figma auto-groups styles by `/` character
+- Maintain consistent naming across colors, typography, effects
+- Use variables cho dynamic tokens (spacing, sizing)
+
+---
+
+### Naming Convention Rules
+
+**Format**: `Category/Type/State`
+
+```
+Colors:
+  Background/Primary
+  Background/Hover
+  Text/Primary
+  Text/Disabled
+  Action/Primary
+  Action/Hover
+  Status/Success
+
+Typography:
+  Display
+  Heading 1
+  Body
+  Label
+
+Effects:
+  Shadow/Small
+  Shadow/Large
+```
+
+**Rules**:
+- ✅ Use `/` untuk nesting (Figma tạo folder)
+- ✅ Semantic naming (Background, Text, Action, Status)
+- ✅ Consistent casing (PascalCase cho style names)
+- ❌ Avoid: "Color1", "Font14px", "Blue" (non-semantic)
+
+---
+
 ### 7. Grid & Layout
 
 ```

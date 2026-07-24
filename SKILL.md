@@ -124,9 +124,35 @@ Liệt kê tất cả screen/state cần thiết:
 7. Interaction
 8. Responsive behavior
 
-#### C. Tạo trong Figma
+#### C. Tạo trong Figma - Sử dụng Tokens
+
+**Bắt buộc dùng Design Tokens** cho tất cả design:
+- ✅ **Color Tokens** cho tất cả colors (không bao giờ dùng literal hex)
+  - Background/Primary, Text/Primary, Action/Primary, Status/Success, etc.
+  - Xem: `token-application-guide.md` section 2 (Color Token Application)
+
+- ✅ **Typography Tokens** cho tất cả text styling
+  - Display, Heading 1-3, Body, Label, Caption
+  - Xem: `token-application-guide.md` section 3 (Typography Token Application)
+
+- ✅ **Spacing Tokens** (variables hoặc manual scale 8px base)
+  - Spacing/8, Spacing/16, Spacing/24, Spacing/32, etc.
+  - Xem: `token-application-guide.md` section 4 (Spacing Token Application)
+
+- ✅ **Shadow Tokens** cho elevation
+  - Shadow/Small, Shadow/Medium, Shadow/Large, Shadow/Elevated
+  - Xem: `token-application-guide.md` section 5 (Shadow Token Application)
+
+**Workflow**:
+1. Check available tokens (Assets panel)
+2. Use appropriate token (không override)
+3. Verify token applied (Design panel shows style name, not literal value)
+
+**Reference**: `token-application-guide.md` Quick Reference (section 9)
+
+**Component setup**:
 - Sử dụng **Auto Layout** cho tất cả component
-- Tạo **variants** cho different states
+- Tạo **variants** cho different states (mỗi state dùng proper token)
 - Dùng **Component Properties** để linh hoạt
 - Duy trì **naming convention** rõ ràng
 - Organize layer với **intuitive hierarchy**
@@ -331,13 +357,17 @@ Sử dụng spacing scale nhất quán: 4, 8, 12, 16, 20, 24, 32, 40, 48
 - ✓ Có hành động nào khó hoàn tác?
 - ✓ Empty, Loading, Error, Success states đầy đủ?
 
-### UI
-- ✓ Typography nhất quán?
-- ✓ Spacing theo token?
+### UI & Tokens
+- ✓ Typography nhất quán? (dùng Typography Style)
+- ✓ Spacing theo token? (dùng spacing scale 8px base)
 - ✓ Alignment chính xác?
-- ✓ Màu theo semantic token?
+- ✓ Màu theo semantic token? (NO literal hex #XXXXXX)
 - ✓ Icon cùng style?
 - ✓ Visual hierarchy rõ?
+- ✓ **Tất cả colors dùng Color Style** (Background, Text, Action, Status)?
+- ✓ **Tất cả text dùng Typography Style** (không manual font size)?
+- ✓ **Tất cả padding/gap dùng spacing scale** (8, 16, 24, 32...)?
+- ✓ **Tất cả shadow dùng Shadow Style** (nếu có)?
 
 ### Component
 - ✓ Dùng component sẵn có?
