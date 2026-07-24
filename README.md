@@ -14,8 +14,9 @@ ux-ui-design-skill/
 ├── SKILL.md                           # Main skill instructions (tất cả modes)
 ├── README.md                          # File này
 └── references/
-    ├── design-system-foundation.md    # Template xây dựng Design System từ đầu
-    └── prd-reading-checklist.md       # Checklist đọc & phân tích PRD
+    ├── screen-size-layout-requirements.md    # Platform, breakpoint, layout structure ⭐ NEW
+    ├── design-system-foundation.md          # Template xây dựng Design System từ đầu
+    └── prd-reading-checklist.md             # Checklist đọc & phân tích PRD
 ```
 
 ## 🎯 Khi Nào Dùng Skill Này
@@ -89,6 +90,21 @@ Xử lý toàn bộ từ PRD đến design hoàn chỉnh:
 ---
 
 ## 📚 Reference Files
+
+### `screen-size-layout-requirements.md` ⭐ NEW
+Định nghĩa screen size, responsive breakpoint, layout structure:
+- Platform definitions (web responsive, mobile app, PWA, desktop)
+- Standard breakpoints (320px, 480px, 1024px)
+- Page layout structure (topbar sticky, sidebar flexible, content area)
+- Auto Layout setup patterns với ví dụ Figma
+- Responsive behavior per breakpoint
+- Common layout patterns (3-section, collapsible, content-only, bottom nav)
+- Clarifying questions template để xác định platform & layout
+- Checklist & common mistakes
+
+**Dùng khi**: Bắt đầu design, cần xác định platform & layout trước tiên — **LUÔN hỏi platform trước khi thiết kế!**
+
+---
 
 ### `design-system-foundation.md`
 Template cho xây dựng Design System từ đầu:
