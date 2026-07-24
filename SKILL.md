@@ -189,6 +189,64 @@ Với mỗi thành phần giao diện:
 
 ### Layout Token (Content Width)
 Chốt 1 con số "content width" chuẩn cho khu vực nội dung và áp dụng thống nhất cho MỌI component sẽ nằm trong khu vực đó. Không để mỗi component tự chọn cách đo riêng — đây là nguyên nhân phổ biến gây lệch mép.
+#### Bước 2: Platform & Layout Definition ⭐ (QUAN TRỌNG)
+**Xác định nền tảng & cấu trúc layout TRƯỚC tiên** — đây ảnh hưởng đến toàn bộ strategy thiết kế!
+
+Hỏi người dùng:
+- **Platform**: Web responsive (desktop/tablet/mobile) / Mobile app (iOS/Android) / PWA / Desktop app?
+  → Nếu web responsive, breakpoint nào thiết kế trước?
+  → Cần hỗ trợ tất cả breakpoint hay chỉ một số?
+
+- **Navigation & Layout**:
+  → Có sidebar / navigation panel không?
+  → Topbar sticky (luôn nhìn thấy) hay scroll away?
+  → Trên mobile, sidebar thành drawer/hamburger hay bottom nav?
+
+- **Constraints**:
+  → Max-width cho content area (readability)?
+  → Sidebar width (fixed hay flexible)?
+  → Bất cứ limitation nào từ backend/framework?
+
+**Reference**: Xem `references/screen-size-layout-requirements.md` section 8 (Clarifying Questions) để có template đầy đủ
+
+**Output**: Xác định
+```
+- Platform chính (web/mobile/pwa/desktop)
+- Breakpoints cần thiết kế
+- Layout pattern (sidebar+content / content-only / bottom nav)
+- Topbar/Sidebar/Content behavior ở mỗi breakpoint
+```
+
+#### Bước 3: Hỏi clarifying questions
+Nếu PRD chưa rõ, hỏi bạn:
+- Người dùng chính là ai?
+- Hành động chính trên screen là gì?
+- Dữ liệu nào cần hiển thị?
+- Trạng thái nào có thể xảy ra?
+- Có quyền hạn khác nhau không?
+- Constraints kỹ thuật / nghiệp vụ?
+
+#### Bước 4: Trích xuất yêu cầu
+Phân loại thành: Functional, Business rules, Permissions, Data, Validation, Error cases, Empty cases, Loading cases, Success cases, Edge cases, Responsive, Accessibility
+
+#### Bước 5: Xây dựng flow
+- Happy path
+- Alternative paths
+- Error paths
+- Confirmation points
+- Success states
+
+#### Bước 6: Xác định màn hình
+Liệt kê tất cả screen/state cần thiết:
+- List page, Detail page, Create page, Edit page
+- Empty state, Loading state, Error state, Permission denied
+- Confirmation modal, Success notification
+
+#### Bước 7: Xác định component
+- Component có sẵn trong Design System
+- Component cần tạo mới
+- Component cần bổ sung variant
+- Component đặc biệt cho tính năng này
 
 ### Color Token
 Sử dụng **semantic token**, không chỉ tên vật lý:
