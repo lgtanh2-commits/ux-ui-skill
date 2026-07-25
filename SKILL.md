@@ -131,6 +131,78 @@ Không chỉ thiết kế happy path. Luôn xem xét:
 - First-time user, Returning user, Destructive action, Undo flow
 - Edge cases và recovery paths
 
+### 7. Design Thinking Protocol — Hỏi Trước, Rồi Commit Boldly ⭐
+
+**LUÔN HỎI TRƯỚC** khi bắt đầu thiết kế. Không bao giờ ngay lập tức vẽ màn hình.
+
+#### 4 Câu Hỏi Cốt Lõi
+
+1. **Purpose**: Vấn đề này giải quyết cái gì? Người dùng chính là ai? Họ dùng khi nào?
+2. **Tone/Aesthetic**: Hướng thiết kế nào? Chọn 1 extreme (xem Aesthetic Direction Options dưới)
+3. **Constraints**: Requirement kỹ thuật gì? Platform nào? Performance, framework?
+4. **Differentiation**: Cái gì sẽ làm nó UNFORGETTABLE? Điều gì người dùng sẽ nhớ?
+
+#### Sau Khi Có Câu Trả Lời
+
+- **Commit FULLY** vào hướng được chọn — không half-measures, không compromise
+- Đề xuất 2-3 alternative approaches nếu cần, nhưng mỗi cái phải BOLD
+- Sau đó implement với precision: production-grade, visually striking, memorable
+
+---
+
+## Aesthetic Direction Options — Chọn 1 Extreme ⭐
+
+**Không bao giờ thiết kế "neutral" hoặc "generic"**. Luôn chọn 1 direction clear và execute với precision:
+
+| Direction | Characteristics | Use Case |
+|-----------|-----------------|----------|
+| **Brutally Minimal** | Stripped essence, bold typography, vast whitespace | Law firms, luxury, editorial |
+| **Maximalist Chaos** | Layered, dense, visually rich, controlled disorder | Creative agencies, portfolios |
+| **Retro-futuristic** | Vintage + sci-fi, nostalgic tech aesthetics | Tech startups, gaming |
+| **Organic/Natural** | Soft edges, earthy colors, textures, nature-inspired | Wellness, food, sustainability |
+| **Luxury/Refined** | Elegant spacing, premium typography, subtle details | High-end products, banking, jewelry |
+| **Playful/Toy-like** | Bright colors, rounded shapes, delightful interactions | Kids apps, social, community |
+| **Editorial/Magazine** | Strong typography hierarchy, asymmetric layouts | Media, publishing, blogs |
+| **Brutalist/Raw** | Exposed structure, harsh contrasts, intentionally rough | Art galleries, galleries, bold statements |
+| **Art Deco/Geometric** | Bold patterns, metallic accents, symmetric elegance | Fashion, luxury, jewelry |
+| **Soft/Pastel** | Gentle gradients, muted tones, calming atmosphere | Wellness, meditation, health |
+| **Industrial/Utilitarian** | Functional, no-nonsense, mechanical precision | Tools, SaaS, dashboards |
+
+**Key Point**: Chọn xong, EXECUTE WITH PRECISION — tất cả quyết định design đều flow từ direction này.
+
+---
+
+## ❌ Avoid Generic AI-Generated Aesthetics (STRICTLY FORBIDDEN)
+
+Không bao giờ sử dụng những aesthetic pattern sau vì chúng trông AI-generated:
+
+### ❌ Fonts (NEVER)
+- Inter, Roboto, Arial (quá generic)
+- Space Grotesk (AI generation favorite)
+- System fonts as primary choice
+- **Check**: "Nhìn cái này có vẻ Claude-generated không?" → Nếu có, redesign ngay
+
+### ❌ Colors (NEVER)
+- Generic SaaS blue (#3B82F6)
+- Purple gradients on white backgrounds
+- Evenly-distributed timid colors (không có dominant color)
+→ **Thay vào**: Dominant color + SHARP accents, unexpected neutral pairs
+
+### ❌ Patterns & Effects (NEVER)
+- Cookie-cutter layouts (predictable, generic)
+- Glass morphism effects
+- Apple design mimicry (find your own voice)
+- Liquid/blob backgrounds (overused)
+→ **Thay vào**: Gradient meshes, noise textures, geometric patterns, contextual effects, bold typography
+
+### ✅ Create Atmosphere Instead (DO THIS)
+- Suggest photography, patterns, textures over flat colors
+- Use gradient meshes, noise textures, geometric patterns
+- Apply layered transparencies, dramatic shadows, decorative borders
+- Consider custom cursors, grain overlays, contextual effects
+- Think beyond typical patterns — step off the written path
+- Use unique color pairs: Terracotta + Charcoal, Sage + Navy, Coral + Slate
+
 ---
 
 ## III. Quy Trình Làm Việc
@@ -287,23 +359,238 @@ Liệt kê tất cả screen/state cần thiết:
 - Component cần bổ sung variant
 - Component đặc biệt cho tính năng này
 
-### Color Token
-Sử dụng **semantic token**, không chỉ tên vật lý:
-- Background/Primary, Background/Secondary, Background/Selected, Background/Hover
-- Text/Primary, Text/Secondary, Text/Disabled
-- Border/Default, Border/Strong
-- Action/Primary, Action/Hover, Action/Disabled
-- Status/Success, Status/Warning, Status/Error, Status/Info
+### Color System Architecture ⭐
 
-### Typography Scale
-- Display, Heading 1-3, Title, Body, Body Small, Label, Caption, Helper Text
-- Mỗi style định nghĩa: font family, weight, size, line height, letter spacing
+**Philosophy**: Mọi màu phải serve a clear purpose — không decorative colors.
+
+#### Two-Role Palette Structure
+
+**1. Base/Neutral Palette** (4-5 colors):
+- **Background** (lightest) — page backgrounds, surface
+- **Surface** (light-medium) — cards, inputs, panels
+- **Border/Dividers** (medium) — subtle separation
+- **Text Secondary** (medium-dark) — helper text, secondary info
+- **Text Primary** (darkest) — main content, headings
+
+Choose **warm greys** (beige/brown undertones) OR **cool greys** (blue undertones):
+- Warm = Organic, approachable, trustworthy
+- Cool = Modern, tech-forward, professional
+
+**2. Accent Palette** (1-3 colors):
+- **Primary Action** (CTA buttons, key interactions)
+- **Status Indicators** (success, warning, error, info)
+- **Focus/Hover States** (interactive feedback)
+- Use **saturated colors** for clear contrast against neutrals
+
+#### Palette Structure Example
+
+```
+Neutrals: slate-50, slate-100, slate-300, slate-700, slate-900
+Accents: 
+  - teal-500 (primary action)
+  - amber-500 (warning)
+  - red-500 (error)
+  - green-500 (success)
+```
+
+#### Color Application Rules
+
+- **Backgrounds**: Lightest neutral (slate-50 or white)
+- **Text Primary**: Darkest neutral (slate-900)
+- **Text Secondary**: Mid-tone neutral (slate-600)
+- **Buttons (primary)**: Accent color with white/lightest text
+- **Buttons (secondary)**: Neutral with border and dark text
+- **Status indicators**: Specific accent (green=success, red=error, amber=warning, blue=info)
+- **Interactive states**:
+  - Hover: Darken by 10-15% or shift hue slightly
+  - Focus: Use ring/outline in accent color
+  - Disabled: Reduce opacity to 40-50%, remove hover effects
+
+#### Unique Color Strategy (Stand Out) ⭐
+
+To break from generic AI patterns:
+
+- ❌ **NEVER** use default SaaS blue (#3B82F6) or purple gradients on white
+- ❌ **NEVER** use evenly-distributed timid colors (no clear dominant)
+- ✅ **Use unexpected neutrals**: warm greys, soft off-whites, deep charcoals, rich blacks
+- ✅ **Pair neutrals with distinctive accents**:
+  - Terracotta + Charcoal
+  - Sage + Navy
+  - Coral + Slate
+  - Warm grey + Teal
+- ✅ **Dominant colors with SHARP accents** outperform timid, evenly-distributed palettes
+- ✅ **Vary between light & dark themes** — no design should look the same
+
+#### Create Atmosphere with Color
+
+- **Gradient meshes** for depth and visual interest
+- **Noise textures & grain overlays** for tactile feel
+- **Layered transparencies** for dimension
+- **Dramatic shadows** for emphasis (when intentional)
+
+**Test**: "Does this color palette look AI-generated?" → If yes, reconsider
+
+#### Accessibility
+
+- Ensure sufficient contrast for color-blind users
+- Follow WCAG 2.1 AA: minimum 4.5:1 for normal text, 3:1 for large text
+- Don't rely on color alone to convey information (add icons or labels)
+
+### Typography Excellence Framework ⭐
+
+**Philosophy**: Typography là primary design element — chọn fonts lạ, characterful, và distinctive.
+
+#### Functional vs Emotional Typography
+- **Headlines/Display**: Emotion & personality > legibility (chọn unexpected fonts)
+- **Body Text**: Legibility & reading comfort > personality (clear, efficient)
+- **UI/Labels**: Clarity & scannability > expression (functional)
+
+#### Font Selection Strategy
+- Max 3 typefaces per design, nhưng **UNEXPECTED & characterful**
+- Limit 3 weights per typeface (e.g., 400 Regular, 600 Semi-Bold, 700 Bold)
+- Use variable fonts khi có để fine-tuned control
+
+**NEVER Use As Primary**:
+- ❌ Inter (overused by AI & generic SaaS)
+- ❌ Roboto (too generic)
+- ❌ Arial / Helvetica (default fallback vibes)
+- ❌ Space Grotesk (AI generation favorite)
+- ❌ System fonts as primary choice
+
+**Find Distinctive Fonts**:
+- Google Fonts (nhưng dig deeper than page 1)
+- Type foundries cho unique options
+- Chọn fonts phục vụ CHOSEN AESTHETIC DIRECTION
+
+#### Font Pairing Logic (Create Contrast)
+
+Khi dùng 2+ typefaces, tạo contrast thông qua:
+
+1. **Category Contrast**: Serif + Sans-serif (classic, clear distinction)
+2. **Weight Contrast**: Light + Bold (dynamic, energetic)
+3. **Personality Contrast**: Geometric + Humanist (modern + warm)
+
+Examples:
+- Serif headlines + Sans body (editorial, trustworthy)
+- Display headlines + System body (distinctive + efficient)
+- Bold sans headlines + Light sans body (modern, clean)
+
+#### Typographic Scale (Mathematical)
+
+Use consistent ratio for size hierarchy:
+- **Ratio**: Major third (1.25x) moderate, Perfect fourth (1.333x) dramatic
+- **Base**: 16px (1rem) cho body text
+
+Example scale (1.25x):
+```
+xs:   0.64rem (10px)
+sm:   0.8rem  (13px)
+base: 1rem    (16px)
+lg:   1.25rem (20px)
+xl:   1.563rem (25px)
+2xl:  1.953rem (31px)
+3xl:  2.441rem (39px)
+4xl:  3.052rem (49px)
+5xl:  3.815rem (61px)
+```
+
+#### UI Typography Specifics
+- **Button text**: Semi-Bold (600), 14-16px, consistent casing
+- **Form labels**: Regular (400), 14px, positioned ABOVE input (not placeholder)
+- **Form input text**: Regular (400), 16px minimum (prevents iOS zoom)
+- **Placeholder text**: Light (300) or desaturated, same size as input
+- **Error messages**: Regular (400), 12-14px, color-coded (red)
+
+#### Responsive Typography
+
+Scale sizes across breakpoints:
+```tsx
+// Fluid sizing with CSS clamp (best)
+h1 { font-size: clamp(2rem, 5vw, 4rem); }
+
+// Or breakpoint-based (Tailwind)
+<h1 className="text-3xl md:text-4xl lg:text-5xl">
+```
+
+Reduce sizes on mobile (20-30% smaller than desktop)
 
 ### Spacing System
 Sử dụng spacing scale nhất quán: 4, 8, 12, 16, 20, 24, 32, 40, 48
 
 ### Token Hierarchy
 **Primitive tokens** (color/blue/500, space/4) → **Semantic tokens** (color/text/primary, color/action/primary) → **Component tokens** (button/primary/background/default)
+
+---
+
+## IV.5 Modern Interaction Patterns ⭐
+
+### 1. Direct Manipulation (UX Principle)
+
+Users interact directly with content, not through abstract controls:
+- **Drag & drop** to reorder (not up/down buttons)
+- **Inline editing** (click to edit, not separate form)
+- **Sliders** for ranges (not numeric input)
+- **Pinch/zoom** on mobile (not +/- buttons)
+
+### 2. Immediate Feedback
+
+Every interaction provides instantaneous visual feedback (within 100ms):
+- **Visual**: Button pressed state, hover effects, color changes
+- **Haptic**: Vibration on mobile (submit, error, success)
+- **Audio**: Subtle sounds for critical actions (optional, user-controlled)
+- **Loading**: Skeleton screens, spinners for >300ms operations
+- **Success**: Checkmarks, green highlights, toast notifications
+- **Error**: Red highlights, inline error messages, shake animations
+
+### 3. Conversational Interfaces
+
+Prioritize natural language interaction where appropriate:
+
+**Four types**:
+- **Pure chat**: Full conversation (AI assistants, support bots)
+- **Command palette**: Text-based shortcuts (Cmd+K, search everywhere)
+- **Smart search**: Natural language queries (search "meetings next week")
+- **Form alternatives**: Conversational data collection
+
+**When to use**:
+- Complex searches with multiple variables
+- Task guidance (wizards, onboarding)
+- Contextual help
+- Quick actions (command palette)
+
+**When NOT to use**:
+- Simple forms (just use inputs)
+- Precise control interfaces (design tools)
+- High-frequency repetitive tasks
+
+### 4. Adaptive Layouts
+
+Respond to user context automatically:
+- **Time-based**: Dark mode at night, light during day
+- **Device-based**: Simplified UI on mobile, full features on desktop
+- **Connection-based**: Reduce images/video on slow connections
+- **Usage-based**: Prioritize frequent actions, hide rarely-used features
+
+Examples:
+- Auto dark/light mode based on time or system preference
+- Simplified mobile navigation (hamburger menu) vs full desktop nav
+- Collapsed sidebar on small screens, expanded on large
+
+### 5. Forgiveness & Recovery
+
+Make errors difficult, but recovery easy:
+
+**Prevention strategies**:
+- Disable invalid actions (grey out unavailable buttons)
+- Validate inputs inline (before submission)
+- Confirm destructive actions (delete, overwrite)
+- Auto-save in background (drafts, progress)
+
+**Recovery strategies**:
+- Undo/redo for all state changes
+- Soft deletes (trash/archive before permanent delete)
+- Clear error messages with actionable fixes
+- Preserve user input on errors (don't clear forms)
 
 ---
 
@@ -695,25 +982,72 @@ Sau mỗi nhiệm vụ thiết kế, trình bày kết quả theo cấu trúc ph
 
 ## XVII. Những Điều Bị Cấm
 
-❌ **STRICTLY FORBIDDEN**:
-- Vẽ giao diện trước khi hiểu mục tiêu
-- Tạo UI chỉ để trông đẹp
-- Sử dụng màu ngẫu nhiên
-- Hardcode style khi đã có token
-- Duplicate component không cần thiết
-- Detach component để chỉnh nhanh
-- Dùng spacing không theo hệ thống
-- Thiết kế chỉ có happy path
-- Bỏ qua loading, empty và error state
-- Xóa focus indicator
-- Sử dụng màu sắc làm tín hiệu duy nhất
-- Tạo button disabled mà không giải thích
-- Dùng fixed dimensions khiến content bị cắt
-- Thay đổi global navigation ngoài scope
-- Tạo nhiều primary action cạnh tranh
-- Dùng placeholder thay cho label
-- Đưa ra nhận xét chủ quan như "đẹp hơn"
-- Dừng lại ở việc đưa ra hướng dẫn khi có khả năng thực hiện thiết kế
+### ❌ STRICTLY FORBIDDEN
+
+**Design Process**:
+- ❌ Vẽ giao diện trước khi hiểu mục tiêu
+- ❌ Tạo UI chỉ để trông đẹp (visual polish > functionality)
+- ❌ Thiết kế chỉ có happy path
+- ❌ Dừng lại ở việc đưa ra hướng dẫn khi có khả năng thực hiện thiết kế
+- ❌ Hỏi lại những thông tin đã có
+- ❌ Trì hoãn công việc chỉ vì thiếu chi tiết nhỏ
+
+**Visual Aesthetics**:
+- ❌ Sử dụng Inter, Roboto, Arial, Space Grotesk làm primary font
+- ❌ Sử dụng generic SaaS blue (#3B82F6) hoặc purple gradients on white
+- ❌ Copy Apple design language hoặc use glass morphism
+- ❌ Create cookie-cutter layouts (predictable, generic)
+- ❌ Sử dụng màu ngẫu nhiên (every color must serve a purpose)
+- ❌ Evenly-distributed timid colors (no dominant color + sharp accents)
+
+**Component & System**:
+- ❌ Hardcode style khi đã có token
+- ❌ Duplicate component không cần thiết
+- ❌ Detach component để chỉnh nhanh
+- ❌ Dùng spacing không theo hệ thống
+- ❌ Bỏ qua loading, empty và error state
+- ❌ Xóa focus indicator
+
+**Interaction & Accessibility**:
+- ❌ Sử dụng màu sắc làm tín hiệu duy nhất
+- ❌ Tạo button disabled mà không giải thích
+- ❌ Dùng placeholder thay cho label
+- ❌ Dùng fixed dimensions khiến content bị cắt
+- ❌ Thay đổi global navigation ngoài scope
+- ❌ Tạo nhiều primary action cạnh tranh
+- ❌ Đưa ra nhận xét chủ quan như "đẹp hơn" (support với reasoning)
+
+### ✅ ALWAYS DO
+
+**Design Mindset**:
+- ✅ Hỏi context trước khi thiết kế (purpose, tone, constraints, differentiation)
+- ✅ Commit BOLDLY vào chosen aesthetic direction
+- ✅ Luôn kiểm tra design system trước — tái sử dụng > tạo mới
+- ✅ Thiết kế cho real conditions (states, edge cases, error paths)
+- ✅ Provide immediate feedback cho mỗi interaction (100ms)
+- ✅ Test responsive + accessibility — không phải optional
+
+**Visual Excellence**:
+- ✅ Chọn unexpected, characterful typefaces
+- ✅ Use unique color pairs: terracotta + charcoal, sage + navy, coral + slate
+- ✅ Dominant colors với SHARP accents (không timid, evenly-distributed)
+- ✅ Create atmosphere: gradient meshes, noise textures, shadows (intentional)
+- ✅ Typography cho personality (headlines) + clarity (body text)
+- ✅ Design phục vụ chosen aesthetic extreme
+
+**Component & System**:
+- ✅ Use semantic tokens consistently
+- ✅ Auto Layout cho all suitable components
+- ✅ Component properties đầy đủ (variants, boolean, text swaps)
+- ✅ Responsive & accessible từ component level
+- ✅ Test toggle properties trên instance thật
+
+**Handoff & Documentation**:
+- ✅ Developer không phải đoán behavior
+- ✅ Layer & token names meaningful
+- ✅ Responsive behavior mô tả rõ
+- ✅ Edge cases ghi lại
+- ✅ Design rationale giải thích
 
 ---
 
@@ -824,4 +1158,111 @@ Xử lý từ PRD đến high-fidelity UI đầy đủ.
 
 ---
 
-*Skill này dựa trên framework toàn diện cho Senior Product Designer — kết hợp giữa UX best practices, Design System discipline, và Product Thinking.*
+## XXIII. Comprehensive Testing Checklist ⭐
+
+### Visual Testing
+
+- [ ] Responsive at common breakpoints (320px, 480px, 768px, 1024px, 1440px)
+- [ ] Touch targets ≥44x44px on mobile
+- [ ] Different content lengths (short, long, edge cases)
+- [ ] Shadows, gradients, textures render correctly
+- [ ] Font rendering across browsers and OS
+- [ ] Color palette maintains integrity (no banding, gradients smooth)
+- [ ] Icons render crisp at all sizes
+- [ ] Images/media scale properly without distortion
+- [ ] Animation timing & easing feel natural
+- [ ] "Does this look AI-generated?" → NO ✓
+
+### Accessibility Testing
+
+- [ ] Keyboard navigation (Tab, Shift+Tab, Enter, Escape)
+- [ ] Screen reader compatibility (semantic HTML, ARIA labels)
+- [ ] Color contrast ≥4.5:1 for normal text, ≥3:1 for large text
+- [ ] Focus states visible and clear on all interactive elements
+- [ ] Focus order logical and predictable
+- [ ] No keyboard traps
+- [ ] Audio/video has captions or transcripts (if applicable)
+- [ ] Form labels associated with inputs
+- [ ] Error messages descriptive and linked to fields
+- [ ] WCAG AA compliance at minimum
+
+### State & Interaction Testing
+
+- [ ] Default state correct for all elements
+- [ ] Hover states obvious and helpful
+- [ ] Active/pressed states clear
+- [ ] Focus states visible without focus visible pseudo-class
+- [ ] Disabled states prevent interaction and show reason
+- [ ] Loading states appear within appropriate time
+- [ ] Success states provide clear confirmation
+- [ ] Error states guide user to recovery
+- [ ] Empty states explain why empty and suggest action
+- [ ] All state transitions smooth and intentional
+
+### Component Testing
+
+- [ ] Components reused where possible (no redundancy)
+- [ ] Auto Layout works correctly with varied content
+- [ ] Text truncation/wrapping handled properly
+- [ ] Icons toggle on/off without breaking layout
+- [ ] Optional content bake/hide smoothly
+- [ ] Properties work correctly on all variants
+- [ ] Instances preserve visual fidelity
+- [ ] Nested components render correctly
+- [ ] Component responsive behavior predictable
+
+### Responsive & Layout Testing
+
+- [ ] Desktop/tablet/mobile layouts appropriate for each size
+- [ ] Content reflow logical and readable
+- [ ] No horizontal scrolling (unless intentional)
+- [ ] Touch targets maintain ≥44px minimum on mobile
+- [ ] Modals/drawers fit viewport on all sizes
+- [ ] Landscape/portrait orientations work
+- [ ] Navigation adapts appropriately (hamburger vs sidebar)
+- [ ] Images scale without distortion
+- [ ] Tables/data readable at all sizes
+
+### Cross-Browser & Device Testing
+
+- [ ] Chrome/Firefox/Safari (latest versions)
+- [ ] Mobile browsers (Chrome Mobile, Safari iOS)
+- [ ] Real devices, not just emulators
+- [ ] Different screen sizes and densities (retina vs standard)
+- [ ] Different OS defaults (Windows, macOS, iOS, Android)
+- [ ] Touch gestures work (tap, long-press, swipe)
+- [ ] Haptic feedback on iOS (vibration)
+
+### Design System & Consistency Testing
+
+- [ ] Colors match palette exactly (no ad-hoc colors)
+- [ ] Typography uses defined styles (scale + fonts)
+- [ ] Spacing follows grid system (4px base)
+- [ ] Radius consistent across components
+- [ ] Shadows intentional and limited
+- [ ] Icons uniform style and weight
+- [ ] Terminology consistent throughout
+- [ ] Interactive patterns behave the same everywhere
+
+### Performance & Load Testing
+
+- [ ] Assets optimized (images compressed, SVG clean)
+- [ ] Font loading doesn't cause jank (FOUT/FOIT handled)
+- [ ] Animations 60fps on mid-range devices
+- [ ] No layout thrashing (reflows/repaints excessive)
+- [ ] Lazy loading implemented where appropriate
+- [ ] Page weight reasonable for target bandwidth
+
+### Uniqueness Check ⭐
+
+- [ ] Font choices distinctive (NOT Inter/Roboto/Space Grotesk)
+- [ ] Color palette unique (NOT generic SaaS blue + white)
+- [ ] Layout unexpected (NOT cookie-cutter patterns)
+- [ ] Visual direction committed and consistent
+- [ ] No glass morphism or Apple mimicry
+- [ ] Atmosphere created through intentional choices
+- [ ] Design stands out from generic AI patterns
+
+---
+
+*Skill này dựa trên framework toàn diện cho Senior Product Designer — kết hợp giữa UX best practices, Design System discipline, Product Thinking, và Creative Excellence.*
