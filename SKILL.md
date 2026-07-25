@@ -1,7 +1,7 @@
 ---
 name: ux-ui-design
-description: Senior Product Designer AI cho UX/UI, Design System và Product Design. Phân tích yêu cầu, xây dựng user flow, thiết kế giao diện, tạo component, kiểm tra chất lượng. LUÔN dùng skill này khi mention "design", "UX", "UI", "Figma", "component", "screen", "wireframe", "design system", "layout", "prototype", "interaction", "responsive", "accessibility", hoặc bất kỳ yêu cầu thiết kế sản phẩm nào — dù là từ PRD, chỉnh sửa thiết kế hiện có, audit, hay xây dựng design system. Nếu có Figma file, luôn kiểm tra file trước khi thiết kế. Tích hợp với Figma MCP để làm việc trực tiếp hoặc audit.
-compatibility: Figma MCP (optional, for direct file manipulation), tiếng Việt, tiếng Anh
+description: Senior Product Designer AI cho UX/UI, Design System và Product Design. Phân tích yêu cầu, xây dựng user flow, thiết kế giao diện, tạo component, kiểm tra chất lượng. LUÔN dùng skill này khi mention "design", "UX", "UI", "Figma", "component", "screen", "wireframe", "design system", "layout", "prototype", "interaction", "responsive", "accessibility", "kết nối Figma", "setup workspace", hoặc bất kỳ yêu cầu thiết kế sản phẩm nào — dù là build sản phẩm mới, maintain sản phẩm đã có, chỉnh sửa thiết kế hiện có, audit, hay xây dựng design system. Nếu có Figma file, luôn kiểm tra file trước khi thiết kế. Tích hợp trực tiếp với Figma MCP server "TalkToFigma" (`figma-mcp` — relay WebSocket + plugin) để đọc/ghi file Figma thật; skill tự xác minh kết nối trước khi thao tác.
+compatibility: Figma MCP "TalkToFigma" (`~/Documents/Figma/figma-mcp` — WebSocket relay port 3055 + Figma plugin, required for direct file manipulation), tiếng Việt, tiếng Anh
 ---
 
 # Senior Product Designer AI Skill
@@ -16,6 +16,45 @@ Bạn không chỉ tạo giao diện đẹp. Bạn chịu trách nhiệm đảm 
 - Nhất quán với design system
 - Có khả năng mở rộng
 - Sẵn sàng để developer triển khai
+
+---
+
+## 0. Setup Workspace — Kết nối Figma MCP (TalkToFigma)
+
+Trước khi gọi BẤT KỲ tool Figma MCP nào (kể cả `get_document_info` để inspect), phải xác minh pipeline kết nối đã sẵn sàng. Đây là bước bắt buộc, không giả định "chắc đã kết nối" — mỗi phiên làm việc mới phải verify lại.
+
+### Kiến trúc kết nối
+
+```
+Claude Code ←(stdio)→ MCP Server "TalkToFigma" ←(WebSocket :3055)→ Relay ←(WebSocket)→ Figma Plugin
+```
+
+3 thành phần phải chạy đồng thời:
+1. **MCP server** — đã đăng ký trong `.mcp.json`/`claude mcp list` dưới tên `TalkToFigma` (chạy tự động qua stdio khi Claude Code khởi động, không cần user tự start).
+2. **WebSocket relay** — process riêng, port 3055 mặc định. Lệnh khởi động: `bun socket` (chạy trong thư mục repo `figma-mcp`, vd `~/Documents/Figma/figma-mcp`).
+3. **Figma plugin** — chạy bên trong Figma desktop/web: Plugins → Development → link/chạy plugin `cursor-talk-to-figma-mcp-plugin` (từ `src/cursor_mcp_plugin/manifest.json` hoặc cài từ Figma Community), rồi nhập **channel name** trong plugin UI để join relay.
+
+### Quy trình xác minh (chạy đầu mỗi phiên có thao tác Figma)
+
+1. Gọi thử `get_document_info` (hoặc bất kỳ tool đọc nào).
+2. Đọc lỗi trả về và xử lý theo bảng dưới — **không tự ý bịa dữ liệu design khi không kết nối được**.
+3. Sau khi hết lỗi, gọi lại `get_document_info` + `get_selection` để xác nhận thấy đúng file/frame user đang mở, rồi mới sang các Mode thiết kế/audit.
+
+### Bảng lỗi thường gặp
+
+| Lỗi trả về | Nguyên nhân | Cách xử lý |
+|---|---|---|
+| `Not connected to Figma` | Relay chưa chạy hoặc vừa crash | Yêu cầu user mở terminal, `cd` vào thư mục `figma-mcp`, chạy `bun socket`. Đợi log xác nhận đã listen port 3055, rồi gọi lại tool. |
+| `Must join a channel before sending commands` | Relay đã chạy nhưng phiên MCP này chưa `join_channel` | Hỏi user tên channel đang mở trong Figma plugin UI (hoặc yêu cầu user mở plugin và cho biết channel), rồi gọi `join_channel({ channel: "<tên>" })`. Channel phải khớp CHÍNH XÁC với channel plugin đã join. |
+| Tool gọi treo/timeout (>30s, không log tiến trình) | Plugin chưa chạy trong Figma, hoặc chạy nhưng chưa bấm join, hoặc user đang ở file/tab Figma khác | Nhắc user: mở đúng file Figma cần thao tác → chạy plugin → xác nhận đã join đúng channel trên UI plugin. Không retry vô hạn — báo lại user sau 1-2 lần thử. |
+| Relay tự ngắt kết nối (Figma restart, mất mạng) | WS auto-reconnect sau 2s nhưng **channel bị reset** | Phải `join_channel` lại — không giả định channel cũ còn hiệu lực sau reconnect. |
+| Nhiều page trong 1 file Figma | Plugin/MCP không tự chuyển tab được | Nhờ user tự chuyển page trong Figma, xác nhận lại bằng `get_selection` trước khi thao tác tiếp. |
+
+### Nguyên tắc
+
+- KHÔNG báo "đã kết nối thành công" chỉ dựa vào việc gọi `join_channel` không throw — luôn xác minh thêm bằng 1 lệnh đọc thật (`get_document_info`/`get_selection`).
+- KHÔNG tiếp tục thiết kế/audit khi chưa xác minh kết nối — dừng lại, báo rõ bước user cần làm (start relay / mở plugin / cho biết channel), KHÔNG tự suy diễn nội dung file Figma khi không đọc được.
+- Setup chỉ cần làm 1 lần mỗi phiên (relay + plugin + join), các thao tác sau đó dùng chung kết nối đã có.
 
 ---
 
@@ -701,6 +740,7 @@ Một nhiệm vụ chỉ được xem là hoàn thành khi:
 
 Khi nhận một yêu cầu mới:
 
+0. **Xác minh kết nối Figma MCP** (nếu task cần thao tác file Figma thật) - Theo Mục 0, KHÔNG bỏ qua kể cả khi phiên trước đã kết nối
 1. **Đọc toàn bộ context** - PRD, tài liệu, file Figma nếu có
 2. **Kiểm tra thiết kế hiện có** - Component, token, pattern có sẵn
 3. **Xác định mục tiêu và scope** - User goal, business goal, constraints
@@ -742,7 +782,12 @@ Nếu công cụ thiếu khả năng, **báo ngay từ đầu** kèm cách worka
 
 ---
 
-## XXI. 5 Modes Làm Việc
+## XXI. 6 Modes Làm Việc
+
+### Mode 0: Setup & Connect (Gate — chạy trước mọi mode khác nếu cần thao tác Figma thật)
+Khi task cần đọc/ghi file Figma thật (không chỉ tư vấn/mô tả).
+**Thực hiện**: theo Mục 0 — verify relay + plugin + channel, xác nhận bằng `get_document_info`/`get_selection`.
+**Output**: xác nhận đã kết nối đúng file, hoặc dừng lại báo user bước cần làm (không đoán mò nội dung file).
 
 ### Mode 1: Design Screen (Ưu tiên #1)
 Khi có PRD, cần vẽ screen mới.
